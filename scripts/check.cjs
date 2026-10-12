@@ -37,6 +37,18 @@ vm.runInContext(fs.readFileSync('assets/app.js','utf8'),context);
   assert.deepEqual(JSON.parse(storage.get('kodaFavoriteLeagues')),['Soccer::Premier League']);
   vm.runInContext("toggleGame({stopPropagation(){}}, 'fixture-1')",context);
   assert.deepEqual(JSON.parse(storage.get('kodaFavoriteGames')),['fixture-1']);
+  assert.equal(vm.runInContext("isUpcoming({state:'UPCOMING',when:plus(1).toISOString()})",context),true);
+  assert.equal(vm.runInContext("isUpcoming({state:'UPCOMING',when:plus(2).toISOString()})",context),false);
+  assert.equal(vm.runInContext("confirmedGame({a:'Chelsea',b:'TBC'})",context),false);
+  assert.equal(vm.runInContext("confirmedGame({a:'TBD',b:'Arsenal'})",context),false);
+  assert.equal(vm.runInContext("confirmedGame({a:'Chelsea',b:'Arsenal'})",context),true);
+  const goals=vm.runInContext(`soccerScorers({scoring:[
+    {scoringPlay:true,clock:{displayValue:"45'+2'"},participants:[{athlete:{displayName:'Goal Scorer'}},{athlete:{displayName:'Assist Player'}}]},
+    {scoringPlay:true,clock:{displayValue:"45'+2'"},athletesInvolved:[{displayName:'Goal Scorer'}]},
+    {scoringPlay:false,type:{text:'Yellow Card'},athletesInvolved:[{displayName:'Card Player'}]}
+  ]})`,context);
+  assert.equal(goals.length,1);assert.match(goals[0],/Goal Scorer — 1 goal/);
+  assert.match(goals[0],/45&#39;\+2&#39;/);assert.doesNotMatch(goals.join(''),/Assist Player|Card Player/);
   fail=true;
   await vm.runInContext("cache.clear(); show('browse'); renderBrowse()",context);
   assert.match(element('games').innerHTML,/Could not load live data/);

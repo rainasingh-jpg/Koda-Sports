@@ -34,3 +34,7 @@ No production deployment, paid service, credential, backend, or license choice w
 ## October 12 live-data repair
 
 Provider checks confirmed HTTP 400 responses for date ranges on NFL, Premier League, NBA, and MLB, while a single-day NFL request returned HTTP 200. Requests now use individual dates from today through fourteen days ahead, with five requests per league at a time and a twelve-second timeout per request. Duplicate events are merged. Partial schedules remain visible with a warning. The invalid cricket feed is marked unavailable and removed from the default dashboard load. Other league coverage still varies.
+
+## October 12 display and scorer update
+
+Upcoming views now show only today and tomorrow in the browser’s local timezone, including dashboard and favorites. The request window retains two previous days for recent results and ends tomorrow. Games with unconfirmed teams are excluded. Soccer goal extraction reads scoreboard athletesInvolved and summary participants, filters non-goal events, deduplicates shared events, and displays names/minutes on cards and details. A real MLS summary was checked against the new parser.
