@@ -12,8 +12,9 @@ let fail = false;
 const context = vm.createContext({
   document: {getElementById:element,querySelector:element,querySelectorAll:()=>[],title:''},
   localStorage: {getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},
-  Date, Map, Set, URLSearchParams, setInterval:()=>0,
-  fetch:async()=> {
+  Date, Map, Set, URLSearchParams, AbortController, setTimeout, clearTimeout, setInterval:()=>0,
+  fetch:async(url)=> {
+    assert.match(url, /dates=\d{8}&limit=100$/,'Provider requests use one date, not a range');
     if (fail) throw Error('offline');
     return {ok:true,json:async()=>({events:[{
       id:'fixture-1',date:now,status:{type:{state:'pre',shortDetail:'Scheduled'}},
@@ -42,3 +43,4 @@ vm.runInContext(fs.readFileSync('assets/app.js','utf8'),context);
   assert.doesNotMatch(element('games').innerHTML,/class="card"/,'Failure does not invent scores');
   console.log('PASS: dashboard, Today, escaping, favorites, and unavailable-data behavior');
 })().catch(error=>{console.error(error);process.exitCode=1});
+

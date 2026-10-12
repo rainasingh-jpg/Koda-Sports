@@ -24,7 +24,7 @@ On Windows, use `py -m http.server 8000`. Open http://localhost:8000. Use a web 
 
 The app requests ESPN's publicly reachable **unofficial** scoreboard and summary endpoints directly from the browser. Coverage, availability, and browser access can change. No API key or backend is included. Missing data must not be interpreted as no games being played, and no sample scores are substituted.
 
-The app reloads its current view every 90 seconds. Favorites live in this browser's localStorage, with the original storage keys retained. Favorites do not sync between devices or automatically transfer to another website address.
+Scoreboards load individual dates from today through fourteen days ahead because several feeds reject date ranges. Requests time out after twelve seconds, and partially available schedules show a warning. Cricket currently requires a supported replacement feed. The app reloads its current view every 90 seconds. Favorites live in this browser's localStorage, with the original storage keys retained. Favorites do not sync between devices or automatically transfer to another website address.
 
 ## Check the recovered starter
 
@@ -42,3 +42,4 @@ These checks use stubbed responses. They do not verify live provider availabilit
 This is a static site. For a Vercel import, select this repository, use the Other preset, leave the build command empty, and serve the repository root. No deployment has been created or connected by this recovery.
 
 Before treating this as the current production source, compare it with any newer saved code or deployed Koda website. See [recovery notes](docs/RECOVERY.md).
+
